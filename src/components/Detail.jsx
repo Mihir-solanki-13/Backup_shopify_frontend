@@ -3,6 +3,22 @@ import axios from 'axios'; // Import axios for making HTTP requests
 import { useParams } from 'react-router-dom'; 
 import { useNavigate } from 'react-router-dom';
 import restoreFunction from './restore';
+import ProductDetail from './objects/ProductDetail'; 
+import OrderDetail from './objects/OrderDetail';// Import the new component
+import ThemeDetail from './objects/ThemesDetail'
+import PageDetail from './objects/PageDetail';
+import CustomCollectionDetail from './objects/CustomCollectionDetail';
+import SmartCollectionDetail from './objects/SmartCollectionDetail';
+import LocationDetail from './objects/LocationDetail';
+import PolicyDetail from './objects/PolicyDetail';
+import ShippingZoneDetail from './objects/ShippingZoneDetail';
+import CustomerDetail from './objects/CustomerDetail';
+import BlogDetail from './objects/BlogDetail';
+import InventoryLevelDetail from './objects/InventoryLevelDetail';
+import SavedSearchDetail from './objects/SavedSearchDetail';
+import FileDetail from './objects/FileDetail';
+// import ThemeDetail from './objects/ThemeDetail'; 
+
 
 const Detail = () => {
   const { objectType,id} = useParams();
@@ -87,8 +103,11 @@ const Detail = () => {
       setFilteredData({});
     }
   };
-  const { product } = curr_data;
-  const { title, body_html, vendor, status, tags } = filteredData;
+
+  const { product,order,theme,page,customer,custom_collection,smart_collection ,shippingZoneData,policyData,locationData ,blog
+  ,inventoryLevel,file,savedSearch} = curr_data;
+  const {object} = curr_data;
+  // const { title, body_html, vendor, status, tags } = filteredData;
 
   const handleRestore = () => {
     // Check if the UUID is not null
@@ -135,47 +154,39 @@ const Detail = () => {
   return (
     <>
     {objectType} , {id}
-
-    
+      
+       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-200 justify-center w-screen px-56 pt-16">
-         
-      <h1 className="col-span-2 font-bold text-lg">
-        {product.title}
+       <h1 className="col-span-2 font-bold text-lg">
+        {/* {product.title} */}
       </h1>
       
-      <div className="bg-white rounded-lg m-2 p-4">
-        <div className="font-semibold border-b-2 border-b-gray-300 pb-4">
-          Current Item
-        </div>
-        <div className="my-6">
-          <h3 className="font-semibold">Title</h3>
-          <p className="text-gray-500 text-sm">{product.title}</p>
-        </div>
-        <div className="my-6">
-          <h3 className="font-semibold">Description</h3>
-          <p className="text-gray-500 text-sm">{product.body_html || 'No data to view'}</p>
-        </div>
-        <div className="my-6">
-          <h3 className="font-semibold">Vendor</h3>
-          <p className="text-gray-500 text-sm">{product.vendor || 'No data to view'}</p>
-        </div>
-        <div className="my-6">
-          <h3 className="font-semibold">Status</h3>
-          <p className="text-gray-500 text-sm">{product.status || 'No data to view'}</p>
-        </div>
-        <div className="my-6">
-          <h3 className="font-semibold">Tags</h3>
-          <div>
-            {product.tags && product.tags.split(',').map((tag, index) => (
-              <span key={index} className="text-xs m-1 rounded-full px-2 py-1 bg-blue-200 text-blue-600">
-                {tag.trim()}
-              </span>
-            ))}
-          </div>
-        </div>
+    <div className="bg-white rounded-lg m-2 p-4">
+    <div className="font-semibold border-b-2 border-b-gray-300 pb-11">
+        Current Item
+        
       </div>
+       
+      <div>
+          {objectType === 'products' && <ProductDetail product={product} />}
+          {objectType === 'orders' && <OrderDetail order={order} />}
+          {objectType === 'themes' && <ThemeDetail theme={theme} />}
+          {objectType === 'pages' && <PageDetail page={page} />}
+          {objectType === 'custom_collections' && <CustomCollectionDetail collection={custom_collection} />}
+          {objectType === 'smart_collections' && <SmartCollectionDetail collection={smart_collection} />}
+          {objectType === 'locations' && <LocationDetail location={locationData} />}
+          {objectType === 'policies' && <PolicyDetail policy={policyData} />}
+          {objectType === 'shipping_zones' && <ShippingZoneDetail shippingZone={shippingZoneData} />}
+          {objectType === 'customers' && <CustomerDetail customer={customer} />}
+          {objectType === 'blogs' && <BlogDetail blog={blog} />}
+          {objectType === 'inventory_levels' && <InventoryLevelDetail inventoryLevel={inventoryLevel} />}
+          {objectType === 'saved_searches' && <SavedSearchDetail savedSearch={savedSearch} />} 
+          {objectType === 'files' && <FileDetail file={file} />} 
 
+    </div>
 
+       </div>
+         
         <div className="bg-white rounded-lg m-2 p-4">
           <div className="flex flex-row justify-between font-semibold border-b-2 border-b-gray-300 pb-4">
             <label>
@@ -204,33 +215,25 @@ const Detail = () => {
                 </div>
             )}
            
-          <div className="my-6">
-        <h3 className="font-semibold">Title</h3>
-        <p className="text-gray-500 text-sm">{title || "No data to view"}</p>
-      </div>
-      <div className="my-6">
-        <h3 className="font-semibold">Description</h3>
-        <p className="text-gray-500 text-sm">{body_html || 'No data to view'}</p>
-      </div>
-      <div className="my-6">
-        <h3 className="font-semibold">Vendor</h3>
-        <p className="text-gray-500 text-sm">{vendor || 'No data to view'}</p>
-      </div>
-      <div className="my-6">
-        <h3 className="font-semibold">Status</h3>
-        <p className="text-gray-500 text-sm">{status || 'No data to view'}</p>
-      </div>
-      <div className="my-6">
-        <h3 className="font-semibold">Tags</h3>
-        <div>
-          {tags && tags.split(',').map((tag, index) => (
-            <span key={index} className="text-xs m-1 rounded-full px-2 py-1 bg-blue-200 text-blue-600">
-              {tag.trim()}
-            </span>
-          ))}
-        </div>
-      </div>
-      
+           {/* <ProductDetail product={filteredData} /> Use the ProductDetail component here */}
+           {/* <OrderDetail order={filteredData} />  */}
+            
+          {objectType === 'products' && <ProductDetail product={filteredData} />}
+          {objectType === 'orders' && <OrderDetail order={filteredData} />}
+          {objectType === 'themes' && <ThemeDetail theme={filteredData} />}
+          {objectType === 'pages' && <PageDetail page={page} />}
+          {objectType === 'custom_collections' && <CustomCollectionDetail collection={custom_collection} />}
+          {objectType === 'smart_collections' && <SmartCollectionDetail collection={smart_collection} />}
+          {objectType === 'locations' && <LocationDetail location={locationData} />}
+          {objectType === 'policies' && <PolicyDetail policy={policyData} />}
+          {objectType === 'shipping_zones' && <ShippingZoneDetail shippingZone={shippingZoneData} />}
+          {objectType === 'customers' && <CustomerDetail customer={customer} />}
+          {objectType === 'blogs' && <BlogDetail blog={blog} />}
+          {objectType === 'inventory_levels' && <InventoryLevelDetail inventoryLevel={inventoryLevel} />}
+          {objectType === 'saved_searches' && <SavedSearchDetail savedSearch={savedSearch} />} 
+          {objectType === 'files' && <FileDetail file={file} />} 
+
+    
         </div>
       </div>
 
